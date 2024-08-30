@@ -7,7 +7,7 @@ import requests
 st.set_page_config(layout="wide")
 
 # Caminho para o arquivo Excel
-file_path = r"C:\Users\Hugo.raposo\AGRO COMPETENCE\F.PARTS - Gestao\00 GESTÃO\Oportunidade de Vendas\01 - CATALOGO.xls"
+file_path = '01 - CATALOGO.xls'
 
 # Função para buscar imagem da máquina no Unsplash
 def buscar_imagem_unsplash(maquina):
