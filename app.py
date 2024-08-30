@@ -39,6 +39,11 @@ else:
         if abas:
             abas = abas[1:]
 
+        # Colocar a "KOM D50" como a primeira opção
+        if "KOM D50" in abas:
+            abas.remove("KOM D50")
+        abas.insert(0, "KOM D50")
+
     except Exception as e:
         st.error(f"Erro ao ler o arquivo Excel: {e}")
 
@@ -156,8 +161,7 @@ else:
                         if imagem_url:
                             st.image(imagem_url, caption=f"Imagem da Máquina {maquina_selecionada}")
                         else:
-                            st.write(
-                                "Nenhuma imagem encontrada para esta máquina.")
+                            st.write("Nenhuma imagem encontrada para esta máquina.")
 
                 except Exception as e:
                     st.error(f"Erro ao carregar os dados da máquina: {e}")
@@ -183,4 +187,3 @@ else:
             - Suporte técnico especializado
             - Rede de distribuição abrangente
             """)
-
