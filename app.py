@@ -10,8 +10,6 @@ st.set_page_config(layout="wide")
 file_path = '01 - CATALOGO.xls'
 
 # Função para buscar imagem da máquina no Unsplash
-
-
 def buscar_imagem_unsplash(maquina):
     access_key = "J8RWiEJ0nMNT1zvfLDTrzXdrVDSyiX8iVY5a770DXAQ"
     url = "https://api.unsplash.com/search/photos"
@@ -27,7 +25,6 @@ def buscar_imagem_unsplash(maquina):
         return data["results"][0]["urls"]["regular"]
     else:
         return None
-
 
 # Verificar se o arquivo existe
 if not os.path.exists(file_path):
@@ -64,8 +61,7 @@ else:
         cliente_nome = st.text_input("Nome do Cliente")
         cliente_empresa = st.text_input("Empresa do Cliente")
 
-        st.write(f"{saudacao}, {cliente_nome}. Meu nome é {
-                 vendedor_nome}, da empresa [Nome da Empresa]. É um prazer falar com você! Estamos sempre prontos para ajudar nossos clientes com as melhores soluções em peças e serviços.")
+        st.write(f"{saudacao}, {cliente_nome}. Meu nome é {vendedor_nome}, da empresa [Nome da Empresa]. É um prazer falar com você! Estamos sempre prontos para ajudar nossos clientes com as melhores soluções em peças e serviços.")
 
         st.write(
             "Gostaria de começar perguntando sobre o seu ramo de atuação. Qual é o segmento em que você trabalha?")
@@ -85,8 +81,7 @@ else:
                 df_maquina = df_maquina.dropna(
                     how='all').loc[:, ~df_maquina.columns.str.contains('^Unnamed')]
 
-                st.write(f"Ótimo! Trabalhar com {
-                         maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
+                st.write(f"Ótimo! Trabalhar com {maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
 
                 # Campo de seleção dinâmica para a coluna "DESCRIÇÃO/ KOMATSU D50"
                 coluna_nome = "DESCRIÇÃO/ KOMATSU D50"
@@ -100,8 +95,7 @@ else:
                         itens_filtrados = df_maquina[df_maquina[coluna_nome]
                                                      == item_pesquisado]
                         if not itens_filtrados.empty:
-                            st.write(f"Você selecionou o item '{
-                                     item_pesquisado}'. Este é um excelente produto que pode contribuir muito para o desempenho da sua máquina.")
+                            st.write(f"Você selecionou o item '{item_pesquisado}'. Este é um excelente produto que pode contribuir muito para o desempenho da sua máquina.")
 
                             # Sugerir itens do mesmo kit
                             if 'KIT' in df_maquina.columns:
@@ -118,15 +112,13 @@ else:
                         else:
                             st.write("Nenhum item encontrado com esse nome.")
                 else:
-                    st.warning(f"A coluna '{
-                               coluna_nome}' não foi encontrada na tabela da máquina selecionada.")
+                    st.warning(f"A coluna '{coluna_nome}' não foi encontrada na tabela da máquina selecionada.")
 
                 # Botão para buscar imagem da máquina
                 if st.button("Buscar Imagem da Máquina"):
                     imagem_url = buscar_imagem_unsplash(maquina_cliente)
                     if imagem_url:
-                        st.image(imagem_url, caption=f"Imagem da Máquina {
-                                 maquina_cliente}")
+                        st.image(imagem_url, caption=f"Imagem da Máquina {maquina_cliente}")
                     else:
                         st.write("Nenhuma imagem encontrada para esta máquina.")
 
@@ -162,8 +154,7 @@ else:
                         imagem_url = buscar_imagem_unsplash(
                             maquina_selecionada)
                         if imagem_url:
-                            st.image(imagem_url, caption=f"Imagem da Máquina {
-                                     maquina_selecionada}")
+                            st.image(imagem_url, caption=f"Imagem da Máquina {maquina_selecionada}")
                         else:
                             st.write(
                                 "Nenhuma imagem encontrada para esta máquina.")
@@ -192,3 +183,4 @@ else:
             - Suporte técnico especializado
             - Rede de distribuição abrangente
             """)
+
