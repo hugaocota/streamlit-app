@@ -6,13 +6,13 @@ import os
 st.set_page_config(layout="wide")
 
 # Caminho para o arquivo Excel dos textos
-file_path_textos = r"C:\Users\Hugo.raposo\AGRO COMPETENCE\F.PARTS - Gestao\00 GESTÃO\Oportunidade de Vendas\Script\textos_script_venda.xlsx"
+file_path_textos = r"Script/textos_script_venda.xlsx"
 
 # Caminho para o arquivo Excel das máquinas
 file_path_machines = '01 - CATALOGO.xls'
 
 # Caminho para a logo da empresa
-logo_path = r"C:\Users\Hugo.raposo\AGRO COMPETENCE\F.PARTS - Gestao\00 GESTÃO\Oportunidade de Vendas\Logo Rech\Logo Rech.jpg"
+logo_path = r"Logo Rech/Logo Rech.jpg"
 
 # Função para carregar textos do script a partir do Excel
 
