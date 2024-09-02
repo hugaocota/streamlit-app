@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # URL base do GitHub
-base_url = "https://github.com/hugaocota/streamlit-app/raw/main/"
+base_url = "https://raw.githubusercontent.com/hugaocota/streamlit-app/main/"
 
 # Caminhos dos arquivos no GitHub
 file_path_maquinas = base_url + "Imagens/01%20-%20CATALOGO.xls"
@@ -101,56 +101,4 @@ if maquinas_dict and textos_dict:
                     st.warning(f"A coluna '{coluna_nome}' não foi encontrada na tabela da máquina selecionada.")
 
                 # Botão para buscar imagem da máquina (substituído pelo caminho correto no GitHub)
-                imagem_url = base_url + f"Imagens/{maquina_cliente}/{maquina_cliente}.jpg"
-                st.image(imagem_url, caption=f"Imagem da Máquina {maquina_cliente}")
-
-            except Exception as e:
-                st.error(f"Erro ao carregar os dados da máquina: {e}")
-
-    # Opção 2: Máquinas
-    elif menu_option == "Máquinas":
-        st.title("Máquinas")
-
-        if maquinas_dict:
-            maquina_selecionada = st.selectbox("Selecione a Máquina:", list(maquinas_dict.keys()))
-
-            if maquina_selecionada:
-                try:
-                    df_maquina = maquinas_dict[maquina_selecionada]
-
-                    # Remover colunas "Unnamed" e linhas que são completamente vazias
-                    df_maquina = df_maquina.dropna(how='all').loc[:, ~df_maquina.columns.str.contains('^Unnamed')]
-
-                    # Exibir os dados filtrados
-                    st.title(f"Dados da Máquina: {maquina_selecionada}")
-                    st.dataframe(df_maquina, use_container_width=True)
-
-                    # Botão para buscar imagem da máquina (substituído pelo caminho correto no GitHub)
-                    imagem_url = base_url + f"Imagens/{maquina_selecionada}/{maquina_selecionada}.jpg"
-                    st.image(imagem_url, caption=f"Imagem da Máquina {maquina_selecionada}")
-
-                except Exception as e:
-                    st.error(f"Erro ao carregar os dados da máquina: {e}")
-
-    # Opção 3: Marcas
-    elif menu_option == "Marcas":
-        st.title("Marcas")
-        marcas = ["Marca A", "Marca B", "Marca C"]  # Exemplo de marcas
-        marca_selecionada = st.selectbox("Selecione a Marca:", marcas)
-        if marca_selecionada:
-            st.write(f"Informações detalhadas sobre a {marca_selecionada}.")
-            st.write("""
-            **Histórico:**  
-            A [Marca Selecionada] é uma das líderes no mercado, conhecida pela sua qualidade e inovação.
-
-            **Produtos Principais:**  
-            - Produto 1
-            - Produto 2
-            - Produto 3
-
-            **Diferenciais:**  
-            - Alta durabilidade
-            - Suporte técnico especializado
-            - Rede de distribuição abrangente
-            """)
-
+                imagem_url = base_url + f
