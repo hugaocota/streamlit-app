@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import requests
 
 # Definir o layout como "wide" para expandir o conteúdo
 st.set_page_config(layout="wide")
@@ -13,11 +12,12 @@ logo_path = "https://github.com/hugaocota/streamlit-app/raw/main/Logo%20Rech/Log
 def carregar_textos(file_path):
     try:
         textos_df = pd.read_excel(file_path)
-        if 'Parte' not in textos_df.columns or 'Texto' not in textos_df.columns:
+        st.write(textos_df)  # Adicionar isso para ver o conteúdo do DataFrame
+        if textos_df.columns[0] != 'Parte' or textos_df.columns[1] != 'Texto':
             st.error("As colunas 'Parte' e 'Texto' não foram encontradas no arquivo Excel.")
             return None
         else:
-            return textos_df.set_index('Parte')['Texto'].to_dict()
+            return textos_df.set_index(textos_df.columns[0])[textos_df.columns[1]].to_dict()
     except Exception as e:
         st.error(f"Erro ao carregar os textos do script: {e}")
         return None
@@ -33,6 +33,7 @@ except Exception as e:
 
 # Certifique-se de que os textos foram carregados corretamente antes de continuar
 if textos_dict:
+    st.write(textos_dict)  # Adicionar isso para ver o conteúdo de textos_dict
     # Caminho para o arquivo Excel com as máquinas
     file_path_maquinas = "https://github.com/hugaocota/streamlit-app/raw/main/Imagens/01%20-%20CATALOGO.xls"
 
