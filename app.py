@@ -28,6 +28,12 @@ def carregar_textos(file_path):
         st.error(f"Erro ao carregar os textos do script: {e}")
         return None
 
+# Função para buscar imagem da máquina no GitHub
+def buscar_imagem_maquina(maquina):
+    base_url = "https://github.com/hugaocota/streamlit-app/raw/main/Imagens/"
+    imagem_url = base_url + f"{maquina}/{maquina}.jpg"
+    return imagem_url
+
 # Carregar os textos
 textos_dict = carregar_textos(file_path_textos)
 
@@ -87,6 +93,10 @@ else:
 
                 st.write(f"Ótimo! Trabalhar com {maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
 
+                # Exibir a imagem da máquina
+                imagem_url = buscar_imagem_maquina(maquina_cliente)
+                st.image(imagem_url, caption=f"Imagem da Máquina {maquina_cliente}", use_column_width=True)
+
                 coluna_nome = "DESCRIÇÃO/ KOMATSU D50"
                 if coluna_nome in df_maquina.columns:
                     itens_lista = df_maquina[coluna_nome].dropna(
@@ -139,6 +149,10 @@ else:
                     st.title(f"Dados da Máquina: {maquina_selecionada}")
                     st.dataframe(df_maquina, use_container_width=True)
 
+                    # Exibir a imagem da máquina
+                    imagem_url = buscar_imagem_maquina(maquina_selecionada)
+                    st.image(imagem_url, caption=f"Imagem da Máquina {maquina_selecionada}", use_column_width=True)
+
                 except Exception as e:
                     st.error(f"Erro ao carregar os dados da máquina: {e}")
 
@@ -163,3 +177,4 @@ else:
             - Suporte técnico especializado
             - Rede de distribuição abrangente
             """)
+
