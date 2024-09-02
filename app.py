@@ -1,19 +1,17 @@
 import streamlit as st
 import pandas as pd
 
-# URL base do GitHub
-base_url = "https://raw.githubusercontent.com/hugaocota/streamlit-app/main/"
-
-# Caminhos dos arquivos no GitHub
-file_path_maquinas = base_url + "https://github.com/hugaocota/streamlit-app/blob/main/01%20-%20CATALOGO.xls"
-file_path_logo = base_url + "Logo%20Rech/Logo%20Rech.jpg"
-file_path_script = base_url + "Script/textos_script_venda.xlsx"
+# URLs diretas do GitHub
+file_path_maquinas = "https://github.com/hugaocota/streamlit-app/raw/main/Imagens/01%20-%20CATALOGO.xls"
+file_path_logo = "https://github.com/hugaocota/streamlit-app/raw/main/Logo%20Rech/Logo%20Rech.jpg"
+file_path_script = "https://github.com/hugaocota/streamlit-app/raw/main/Script/textos_script_venda.xlsx"
 
 # Função para carregar o Excel das máquinas
 def carregar_excel_maquinas(file_url):
     try:
-        df = pd.read_excel(file_url, None)  # Carrega todas as abas como um dicionário
-        return df
+        xls = pd.ExcelFile(file_url)
+        abas = xls.sheet_names
+        return {aba: pd.read_excel(xls, sheet_name=aba) for aba in abas}
     except Exception as e:
         st.error(f"Erro ao ler o arquivo Excel: {e}")
         return None
@@ -101,7 +99,7 @@ if maquinas_dict and textos_dict:
                     st.warning(f"A coluna '{coluna_nome}' não foi encontrada na tabela da máquina selecionada.")
 
                 # Botão para buscar imagem da máquina
-                imagem_url = f"{base_url}Imagens/{maquina_cliente}/{maquina_cliente}.jpg"
+                imagem_url = f"https://github.com/hugaocota/streamlit-app/raw/main/Imagens/{maquina_cliente}/{maquina_cliente}.jpg"
                 st.image(imagem_url, caption=f"Imagem da Máquina {maquina_cliente}")
             except Exception as e:
                 st.error(f"Erro ao carregar os dados da máquina: {e}")
@@ -127,7 +125,7 @@ if maquinas_dict and textos_dict:
                     st.dataframe(df_maquina, use_container_width=True)
 
                     # Mostrar a imagem da máquina
-                    imagem_url = f"{base_url}Imagens/{maquina_selecionada}/{maquina_selecionada}.jpg"
+                    imagem_url = f"https://github.com/hugaocota/streamlit-app/raw/main/Imagens/{maquina_selecionada}/{maquina_selecionada}.jpg"
                     st.image(imagem_url, caption=f"Imagem da Máquina {maquina_selecionada}")
 
                 except Exception as e:
