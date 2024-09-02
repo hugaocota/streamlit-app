@@ -28,6 +28,14 @@ def carregar_textos(file_path):
         st.error(f"Erro ao carregar os textos do script: {e}")
         return None
 
+# Função para carregar a imagem da máquina
+def carregar_imagem_maquina(maquina):
+    imagem_path = f"Imagens/{maquina}/{maquina}.jpg"
+    if os.path.exists(imagem_path):
+        st.image(imagem_path, caption=f"Imagem da Máquina {maquina}", use_column_width=True)
+    else:
+        st.warning(f"Imagem para {maquina} não encontrada.")
+
 # Carregar os textos
 textos_dict = carregar_textos(file_path_textos)
 
@@ -44,7 +52,11 @@ else:
         abas = xls.sheet_names
 
         if abas:
-            abas = abas[1:]
+            abas = abas[1:]  # Ignora a primeira aba, se necessário
+            if "KOM D50" in abas:
+                default_machine = "KOM D50"
+            else:
+                default_machine = abas[0]  # Seleciona a primeira aba como padrão se "KOM D50" não existir
 
     except Exception as e:
         st.error(f"Erro ao ler o arquivo Excel: {e}")
@@ -84,8 +96,12 @@ else:
             ramo_atuacao = st.text_input("Ramo de Atuação")
             st.write(texto_ramo)
 
-            maquina_cliente = st.selectbox("Selecione a Máquina:", abas)
+            maquina_cliente = st.selectbox("Selecione a Máquina:", abas, index=abas.index(default_machine))
             st.write(texto_maquina)
+
+            # Botão para carregar a imagem da máquina
+            if st.button("Mostrar Imagem da Máquina"):
+                carregar_imagem_maquina(maquina_cliente)
 
         # Se uma máquina foi selecionada
         if maquina_cliente:
@@ -146,6 +162,10 @@ else:
 
                     st.title(f"Dados da Máquina: {maquina_selecionada}")
                     st.dataframe(df_maquina, use_container_width=True)
+
+                    # Botão para carregar a imagem da máquina
+                    if st.button("Mostrar Imagem da Máquina"):
+                        carregar_imagem_maquina(maquina_selecionada)
 
                 except Exception as e:
                     st.error(f"Erro ao carregar os dados da máquina: {e}")
