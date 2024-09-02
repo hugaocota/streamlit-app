@@ -1,44 +1,52 @@
 import streamlit as st
 import pandas as pd
+import os
 
 # Definir o layout como "wide" para expandir o conteúdo
 st.set_page_config(layout="wide")
 
-# Caminho para o arquivo Excel no GitHub
-file_path = "https://github.com/hugaocota/streamlit-app/raw/main/Script/textos_script_venda.xlsx"
-logo_path = "https://github.com/hugaocota/streamlit-app/raw/main/Logo%20Rech/Logo%20Rech.jpg"
-file_path_maquinas = "https://github.com/hugaocota/streamlit-app/raw/main/Imagens/01%20-%20CATALOGO.xls"
+# Caminho para o arquivo Excel dos textos
+file_path_textos = r"C:\Users\Hugo.raposo\AGRO COMPETENCE\F.PARTS - Gestao\00 GESTÃO\Oportunidade de Vendas\Script\textos_script_venda.xlsx"
 
-# Função para carregar os textos do Excel
+# Caminho para o arquivo Excel das máquinas
+file_path_machines = '01 - CATALOGO.xls'
+
+# Caminho para a logo da empresa
+logo_path = r"C:\Users\Hugo.raposo\AGRO COMPETENCE\F.PARTS - Gestao\00 GESTÃO\Oportunidade de Vendas\Logo Rech\Logo Rech.jpg"
+
+# Função para carregar textos do script a partir do Excel
+
+
 def carregar_textos(file_path):
     try:
-        textos_df = pd.read_excel(file_path)
-        if 'Parte' not in textos_df.columns or 'Texto' not in textos_df.columns:
-            st.error("As colunas 'Parte' e 'Texto' não foram encontradas no arquivo Excel.")
-            return None
+        df = pd.read_excel(file_path)
+        if 'parte' in df.columns and 'texto' in df.columns:
+            textos_dict = dict(zip(df['parte'], df['texto']))
+            return textos_dict
         else:
-            return textos_df.set_index('Parte')['Texto'].to_dict()
+            st.error(
+                "As colunas 'parte' e 'texto' não foram encontradas no arquivo Excel.")
+            return None
     except Exception as e:
         st.error(f"Erro ao carregar os textos do script: {e}")
         return None
 
-# Carregar os textos do script
-textos_dict = carregar_textos(file_path)
 
-# Verificar se a logo foi carregada corretamente e exibi-la na parte superior direita
-try:
-    st.image(logo_path, width=150, use_column_width=False)
-except Exception as e:
-    st.error(f"Erro ao carregar a logo: {e}")
+# Carregar os textos
+textos_dict = carregar_textos(file_path_textos)
 
-# Certifique-se de que os textos foram carregados corretamente antes de continuar
-if textos_dict:
-    # Verificar se o arquivo existe e carregar as máquinas
+# Exibir a logo da empresa no canto superior direito
+if os.path.exists(logo_path):
+    st.image(logo_path, width=150, use_column_width=False, clamp=True)
+
+# Verificação do arquivo Excel das máquinas
+if not os.path.exists(file_path_machines):
+    st.error("O arquivo Excel não foi encontrado.")
+else:
     try:
-        xls = pd.ExcelFile(file_path_maquinas)
-        abas = xls.sheet_names  # Lista com os nomes das abas
+        xls = pd.ExcelFile(file_path_machines)
+        abas = xls.sheet_names
 
-        # Remover a primeira aba da lista, se não for necessária
         if abas:
             abas = abas[1:]
 
@@ -48,7 +56,7 @@ if textos_dict:
     # Menu lateral com opções principais
     st.sidebar.title("Menu")
     menu_option = st.sidebar.radio("Selecione uma opção:", [
-                                "Script de Venda", "Máquinas", "Marcas"])
+                                   "Script de Venda", "Máquinas", "Marcas"])
 
     # Opção 1: Script de Venda
     if menu_option == "Script de Venda":
@@ -64,7 +72,9 @@ if textos_dict:
         cliente_nome = st.text_input("Nome do Cliente")
         cliente_empresa = st.text_input("Empresa do Cliente")
 
-        st.write(f"{saudacao}, {cliente_nome}. Meu nome é {vendedor_nome}, {textos_dict.get('apresentacao', 'Texto padrão de apresentação')}")
+        if textos_dict:
+            st.write(f"{saudacao}, {cliente_nome}. Meu nome é {vendedor_nome}, {
+                     textos_dict.get('apresentacao', 'Texto padrão de apresentação')}")
 
         st.write(
             "Gostaria de começar perguntando sobre o seu ramo de atuação. Qual é o segmento em que você trabalha?")
@@ -77,16 +87,14 @@ if textos_dict:
         # Se uma máquina foi selecionada
         if maquina_cliente:
             try:
-                # Carregar os dados da aba selecionada
                 df_maquina = pd.read_excel(xls, sheet_name=maquina_cliente)
 
-                # Remover colunas "Unnamed" e linhas que são completamente vazias
                 df_maquina = df_maquina.dropna(
                     how='all').loc[:, ~df_maquina.columns.str.contains('^Unnamed')]
 
-                st.write(f"Ótimo! Trabalhar com {maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
+                st.write(f"Ótimo! Trabalhar com {
+                         maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
 
-                # Campo de seleção dinâmica para a coluna "DESCRIÇÃO/ KOMATSU D50"
                 coluna_nome = "DESCRIÇÃO/ KOMATSU D50"
                 if coluna_nome in df_maquina.columns:
                     itens_lista = df_maquina[coluna_nome].dropna(
@@ -96,11 +104,11 @@ if textos_dict:
 
                     if item_pesquisado:
                         itens_filtrados = df_maquina[df_maquina[coluna_nome]
-                                                    == item_pesquisado]
+                                                     == item_pesquisado]
                         if not itens_filtrados.empty:
-                            st.write(f"Você selecionou o item '{item_pesquisado}'. Este é um excelente produto que pode contribuir muito para o desempenho da sua máquina.")
+                            st.write(f"Você selecionou o item '{
+                                     item_pesquisado}'. Este é um excelente produto que pode contribuir muito para o desempenho da sua máquina.")
 
-                            # Sugerir itens do mesmo kit
                             if 'KIT' in df_maquina.columns:
                                 kit_do_item = itens_filtrados['KIT'].values[0]
                                 itens_do_mesmo_kit = df_maquina[df_maquina['KIT']
@@ -109,13 +117,14 @@ if textos_dict:
                                     st.write(
                                         "Aqui estão outros itens que fazem parte do mesmo kit e que podem ser interessantes para você:")
                                     st.dataframe(itens_do_mesmo_kit,
-                                                use_container_width=True)
+                                                 use_container_width=True)
                                     st.write(
                                         "Oferecer um pacote completo desses itens pode garantir que sua máquina funcione perfeitamente por mais tempo. Podemos prosseguir com um orçamento?")
                         else:
                             st.write("Nenhum item encontrado com esse nome.")
                 else:
-                    st.warning(f"A coluna '{coluna_nome}' não foi encontrada na tabela da máquina selecionada.")
+                    st.warning(f"A coluna '{
+                               coluna_nome}' não foi encontrada na tabela da máquina selecionada.")
 
             except Exception as e:
                 st.error(f"Erro ao carregar os dados da máquina: {e}")
@@ -124,7 +133,6 @@ if textos_dict:
     elif menu_option == "Máquinas":
         st.title("Máquinas")
 
-        # Remover a primeira aba do filtro, se for o menu que não tem serventia
         if abas:
             maquinas_filtradas = abas
             maquina_selecionada = st.selectbox(
@@ -132,15 +140,12 @@ if textos_dict:
 
             if maquina_selecionada:
                 try:
-                    # Carregar os dados da aba selecionada
                     df_maquina = pd.read_excel(
                         xls, sheet_name=maquina_selecionada)
 
-                    # Remover colunas "Unnamed" e linhas que são completamente vazias
                     df_maquina = df_maquina.dropna(
                         how='all').loc[:, ~df_maquina.columns.str.contains('^Unnamed')]
 
-                    # Exibir os dados filtrados
                     st.title(f"Dados da Máquina: {maquina_selecionada}")
                     st.dataframe(df_maquina, use_container_width=True)
 
@@ -150,7 +155,7 @@ if textos_dict:
     # Opção 3: Marcas
     elif menu_option == "Marcas":
         st.title("Marcas")
-        marcas = ["Marca A", "Marca B", "Marca C"]  # Exemplo de marcas
+        marcas = ["Marca A", "Marca B", "Marca C"]
         marca_selecionada = st.selectbox("Selecione a Marca:", marcas)
         if marca_selecionada:
             st.write(f"Informações detalhadas sobre a {marca_selecionada}.")
