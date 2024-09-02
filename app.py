@@ -13,10 +13,7 @@ file_path_maquinas = "https://github.com/hugaocota/streamlit-app/raw/main/Imagen
 # Função para carregar os textos do Excel
 def carregar_textos(file_path):
     try:
-        st.write(f"Carregando arquivo de textos do caminho: {file_path}")
         textos_df = pd.read_excel(file_path)
-        st.write(f"Colunas encontradas no arquivo: {textos_df.columns}")
-        
         if 'Parte' not in textos_df.columns or 'Texto' not in textos_df.columns:
             st.error("As colunas 'Parte' e 'Texto' não foram encontradas no arquivo Excel.")
             return None
@@ -37,7 +34,6 @@ except Exception as e:
 
 # Verificar se o arquivo de máquinas existe e carregar as máquinas
 try:
-    st.write(f"Carregando arquivo de máquinas do caminho: {file_path_maquinas}")
     xls = pd.ExcelFile(file_path_maquinas)
     abas = xls.sheet_names  # Lista com os nomes das abas
 
@@ -101,4 +97,58 @@ if menu_option == "Script de Venda":
                             kit_do_item = itens_filtrados['KIT'].values[0]
                             itens_do_mesmo_kit = df_maquina[df_maquina['KIT'] == kit_do_item]
                             if not itens_do_mesmo_kit.empty:
-                                st.write("Aqui estão outros itens que fazem parte do mesmo kit e
+                                st.write("Aqui estão outros itens que fazem parte do mesmo kit e que podem ser interessantes para você:")
+                                st.dataframe(itens_do_mesmo_kit, use_container_width=True)
+                                st.write("Oferecer um pacote completo desses itens pode garantir que sua máquina funcione perfeitamente por mais tempo. Podemos prosseguir com um orçamento?")
+                    else:
+                        st.write("Nenhum item encontrado com esse nome.")
+            else:
+                st.warning(f"A coluna '{coluna_nome}' não foi encontrada na tabela da máquina selecionada.")
+
+        except Exception as e:
+            st.error(f"Erro ao carregar os dados da máquina: {e}")
+
+# Opção 2: Máquinas
+elif menu_option == "Máquinas":
+    st.title("Máquinas")
+
+    if abas:
+        maquinas_filtradas = abas
+        maquina_selecionada = st.selectbox("Selecione a Máquina:", maquinas_filtradas)
+
+        if maquina_selecionada:
+            try:
+                # Carregar os dados da aba selecionada
+                df_maquina = pd.read_excel(xls, sheet_name=maquina_selecionada)
+
+                # Remover colunas "Unnamed" e linhas que são completamente vazias
+                df_maquina = df_maquina.dropna(how='all').loc[:, ~df_maquina.columns.str.contains('^Unnamed')]
+
+                # Exibir os dados filtrados
+                st.title(f"Dados da Máquina: {maquina_selecionada}")
+                st.dataframe(df_maquina, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Erro ao carregar os dados da máquina: {e}")
+
+# Opção 3: Marcas
+elif menu_option == "Marcas":
+    st.title("Marcas")
+    marcas = ["Marca A", "Marca B", "Marca C"]  # Exemplo de marcas
+    marca_selecionada = st.selectbox("Selecione a Marca:", marcas)
+    if marca_selecionada:
+        st.write(f"Informações detalhadas sobre a {marca_selecionada}.")
+        st.write("""
+        **Histórico:**  
+        A [Marca Selecionada] é uma das líderes no mercado, conhecida pela sua qualidade e inovação.
+
+        **Produtos Principais:**  
+        - Produto 1
+        - Produto 2
+        - Produto 3
+
+        **Diferenciais:**  
+        - Alta durabilidade
+        - Suporte técnico especializado
+        - Rede de distribuição abrangente
+        """)
