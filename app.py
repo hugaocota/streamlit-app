@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
-import requests
 
 # URL base do GitHub
 base_url = "https://github.com/hugaocota/streamlit-app/raw/main/"
 
-# Caminhos dos arquivos
+# Caminhos dos arquivos no GitHub
 file_path_maquinas = base_url + "Imagens/01%20-%20CATALOGO.xls"
 file_path_logo = base_url + "Logo%20Rech/Logo%20Rech.jpg"
 file_path_script = base_url + "Script/textos_script_venda.xlsx"
@@ -13,7 +12,7 @@ file_path_script = base_url + "Script/textos_script_venda.xlsx"
 # Função para carregar o Excel das máquinas
 def carregar_excel_maquinas(file_url):
     try:
-        df = pd.read_excel(file_url, None)  # None carrega todas as abas como um dicionário
+        df = pd.read_excel(file_url, None)  # Carrega todas as abas como um dicionário
         return df
     except Exception as e:
         st.error(f"Erro ao ler o arquivo Excel: {e}")
@@ -154,3 +153,4 @@ if maquinas_dict and textos_dict:
             - Suporte técnico especializado
             - Rede de distribuição abrangente
             """)
+
