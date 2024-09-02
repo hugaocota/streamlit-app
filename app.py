@@ -15,8 +15,6 @@ file_path_machines = '01 - CATALOGO.xls'
 logo_path = r"Logo Rech/Logo Rech.jpg"
 
 # Função para carregar textos do script a partir do Excel
-
-
 def carregar_textos(file_path):
     try:
         df = pd.read_excel(file_path)
@@ -24,13 +22,11 @@ def carregar_textos(file_path):
             textos_dict = dict(zip(df['parte'], df['texto']))
             return textos_dict
         else:
-            st.error(
-                "As colunas 'parte' e 'texto' não foram encontradas no arquivo Excel.")
+            st.error("As colunas 'parte' e 'texto' não foram encontradas no arquivo Excel.")
             return None
     except Exception as e:
         st.error(f"Erro ao carregar os textos do script: {e}")
         return None
-
 
 # Carregar os textos
 textos_dict = carregar_textos(file_path_textos)
@@ -73,16 +69,13 @@ else:
         cliente_empresa = st.text_input("Empresa do Cliente")
 
         if textos_dict:
-            st.write(f"{saudacao}, {cliente_nome}. Meu nome é {vendedor_nome}, {
-                     textos_dict.get('apresentacao', 'Texto padrão de apresentação')}")
+            st.write(f"{saudacao}, {cliente_nome}. Meu nome é {vendedor_nome}, {textos_dict.get('apresentacao', 'Texto padrão de apresentação')}")
 
-        st.write(
-            "Gostaria de começar perguntando sobre o seu ramo de atuação. Qual é o segmento em que você trabalha?")
+        st.write(textos_dict.get('pergunta_ramo', "Gostaria de começar perguntando sobre o seu ramo de atuação. Qual é o segmento em que você trabalha?"))
         ramo_atuacao = st.text_input("Ramo de Atuação")
 
-        st.write(
-            "Entendido! Agora, poderia me informar qual máquina você está utilizando atualmente?")
-        maquina_cliente = st.selectbox("Selecione a Máquina:", abas)
+        st.write(textos_dict.get('pergunta_maquina', "Entendido! Agora, poderia me informar qual máquina você está utilizando atualmente?"))
+        maquina_cliente = st.selectbox("Selecione a Máquina:", abas, index=abas.index("KOM D50"))
 
         # Se uma máquina foi selecionada
         if maquina_cliente:
@@ -92,8 +85,7 @@ else:
                 df_maquina = df_maquina.dropna(
                     how='all').loc[:, ~df_maquina.columns.str.contains('^Unnamed')]
 
-                st.write(f"Ótimo! Trabalhar com {
-                         maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
+                st.write(f"Ótimo! Trabalhar com {maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
 
                 coluna_nome = "DESCRIÇÃO/ KOMATSU D50"
                 if coluna_nome in df_maquina.columns:
@@ -106,8 +98,7 @@ else:
                         itens_filtrados = df_maquina[df_maquina[coluna_nome]
                                                      == item_pesquisado]
                         if not itens_filtrados.empty:
-                            st.write(f"Você selecionou o item '{
-                                     item_pesquisado}'. Este é um excelente produto que pode contribuir muito para o desempenho da sua máquina.")
+                            st.write(f"Você selecionou o item '{item_pesquisado}'. Este é um excelente produto que pode contribuir muito para o desempenho da sua máquina.")
 
                             if 'KIT' in df_maquina.columns:
                                 kit_do_item = itens_filtrados['KIT'].values[0]
@@ -123,8 +114,7 @@ else:
                         else:
                             st.write("Nenhum item encontrado com esse nome.")
                 else:
-                    st.warning(f"A coluna '{
-                               coluna_nome}' não foi encontrada na tabela da máquina selecionada.")
+                    st.warning(f"A coluna '{coluna_nome}' não foi encontrada na tabela da máquina selecionada.")
 
             except Exception as e:
                 st.error(f"Erro ao carregar os dados da máquina: {e}")
