@@ -93,9 +93,10 @@ else:
 
                 st.write(f"Ótimo! Trabalhar com {maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
 
-                # Exibir a imagem da máquina
-                imagem_url = buscar_imagem_maquina(maquina_cliente)
-                st.image(imagem_url, caption=f"Imagem da Máquina {maquina_cliente}", use_column_width=True)
+                # Botão para carregar a imagem da máquina
+                if st.button("Mostrar Imagem da Máquina"):
+                    imagem_url = buscar_imagem_maquina(maquina_cliente)
+                    st.image(imagem_url, caption=f"Imagem da Máquina {maquina_cliente}", use_column_width=True)
 
                 coluna_nome = "DESCRIÇÃO/ KOMATSU D50"
                 if coluna_nome in df_maquina.columns:
@@ -149,9 +150,10 @@ else:
                     st.title(f"Dados da Máquina: {maquina_selecionada}")
                     st.dataframe(df_maquina, use_container_width=True)
 
-                    # Exibir a imagem da máquina
-                    imagem_url = buscar_imagem_maquina(maquina_selecionada)
-                    st.image(imagem_url, caption=f"Imagem da Máquina {maquina_selecionada}", use_column_width=True)
+                    # Botão para carregar a imagem da máquina
+                    if st.button("Mostrar Imagem da Máquina"):
+                        imagem_url = buscar_imagem_maquina(maquina_selecionada)
+                        st.image(imagem_url, caption=f"Imagem da Máquina {maquina_selecionada}", use_column_width=True)
 
                 except Exception as e:
                     st.error(f"Erro ao carregar os dados da máquina: {e}")
