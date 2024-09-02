@@ -14,11 +14,11 @@ file_path_maquinas = "https://github.com/hugaocota/streamlit-app/raw/main/Imagen
 def carregar_textos(file_path):
     try:
         textos_df = pd.read_excel(file_path)
-        if 'Parte' not in textos_df.columns or 'Texto' not in textos_df.columns:
-            st.error("As colunas 'Parte' e 'Texto' não foram encontradas no arquivo Excel.")
+        if textos_df.shape[1] < 2:  # Verifica se há pelo menos duas colunas
+            st.error("O arquivo Excel não tem colunas suficientes.")
             return None
         else:
-            return textos_df.set_index('Parte')['Texto'].to_dict()
+            return textos_df.set_index(textos_df.columns[0])[textos_df.columns[1]].to_dict()
     except Exception as e:
         st.error(f"Erro ao carregar os textos do script: {e}")
         return None
@@ -82,7 +82,7 @@ if menu_option == "Script de Venda":
             st.write(f"Ótimo! Trabalhar com {maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
 
             # Campo de seleção dinâmica para a coluna "DESCRIÇÃO/ KOMATSU D50"
-            coluna_nome = "DESCRIÇÃO/ KOMATSU D50"
+            coluna_nome = df_maquina.columns[0]
             if coluna_nome in df_maquina.columns:
                 itens_lista = df_maquina[coluna_nome].dropna().unique().tolist()
                 item_pesquisado = st.selectbox("Pesquise o item desejado:", [""] + itens_lista)
