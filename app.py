@@ -28,11 +28,9 @@ def carregar_textos(file_path):
         st.error(f"Erro ao carregar os textos do script: {e}")
         return None
 
-# Função para buscar imagem da máquina no GitHub
-def buscar_imagem_maquina(maquina):
-    base_url = "https://github.com/hugaocota/streamlit-app/raw/main/Imagens/"
-    imagem_url = base_url + f"{maquina}/{maquina}.jpg"
-    return imagem_url
+# Função para substituir as variáveis nos textos
+def substituir_variaveis(texto, cliente_nome, vendedor_nome, maquina_cliente):
+    return texto.format(cliente_nome=cliente_nome, vendedor_nome=vendedor_nome, maquina_cliente=maquina_cliente)
 
 # Carregar os textos
 textos_dict = carregar_textos(file_path_textos)
@@ -75,12 +73,20 @@ else:
         cliente_empresa = st.text_input("Empresa do Cliente")
 
         if textos_dict:
-            st.write(f"{saudacao}, {cliente_nome}. Meu nome é {vendedor_nome}, {textos_dict.get('apresentacao', 'Texto padrão de apresentação')}")
+            texto_saudacao = substituir_variaveis(textos_dict.get('saudacao', ''), cliente_nome, vendedor_nome, '')
+            st.write(f"{saudacao}, {texto_saudacao}")
 
-        st.write(textos_dict.get('pergunta_ramo', "Gostaria de começar perguntando sobre o seu ramo de atuação. Qual é o segmento em que você trabalha?"))
+            texto_introducao = textos_dict.get('introducao', '')
+            st.write(texto_introducao)
+
+            texto_pergunta_ramo = textos_dict.get('pergunta_ramo', '')
+            st.write(texto_pergunta_ramo)
+        else:
+            st.write("Não foi possível carregar os textos do script.")
+
         ramo_atuacao = st.text_input("Ramo de Atuação")
 
-        st.write(textos_dict.get('pergunta_maquina', "Entendido! Agora, poderia me informar qual máquina você está utilizando atualmente?"))
+        st.write("Entendido! Agora, poderia me informar qual máquina você está utilizando atualmente?")
         maquina_cliente = st.selectbox("Selecione a Máquina:", abas, index=abas.index("KOM D50"))
 
         # Se uma máquina foi selecionada
@@ -91,7 +97,8 @@ else:
                 df_maquina = df_maquina.dropna(
                     how='all').loc[:, ~df_maquina.columns.str.contains('^Unnamed')]
 
-                st.write(f"Ótimo! Trabalhar com {maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
+                texto_pergunta_maquina = substituir_variaveis(textos_dict.get('pergunta_maquina', ''), '', '', maquina_cliente)
+                st.write(texto_pergunta_maquina)
 
                 # Botão para carregar a imagem da máquina
                 if st.button("Mostrar Imagem da Máquina"):
