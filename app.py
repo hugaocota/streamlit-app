@@ -28,10 +28,6 @@ def carregar_textos(file_path):
         st.error(f"Erro ao carregar os textos do script: {e}")
         return None
 
-# Função para substituir as variáveis nos textos
-def substituir_variaveis(texto, cliente_nome, vendedor_nome, maquina_cliente):
-    return texto.format(cliente_nome=cliente_nome, vendedor_nome=vendedor_nome, maquina_cliente=maquina_cliente)
-
 # Carregar os textos
 textos_dict = carregar_textos(file_path_textos)
 
@@ -73,21 +69,21 @@ else:
         cliente_empresa = st.text_input("Empresa do Cliente")
 
         if textos_dict:
-            texto_saudacao = substituir_variaveis(textos_dict.get('saudacao', ''), cliente_nome, vendedor_nome, '')
-            st.write(f"{saudacao}, {texto_saudacao}")
+            # Substituir os placeholders nos textos do script
+            texto_saudacao = textos_dict.get('saudacao', 'Texto padrão de saudação')
+            texto_saudacao = texto_saudacao.replace("{cliente_nome}", cliente_nome).replace("{vendedor_nome}", vendedor_nome)
 
-            texto_introducao = textos_dict.get('introducao', '')
+            texto_introducao = textos_dict.get('introducao', 'Texto padrão de introdução')
+            texto_ramo = textos_dict.get('pergunta_ramo', 'Texto padrão de pergunta sobre ramo')
+            texto_maquina = textos_dict.get('pergunta_maquina', 'Texto padrão de pergunta sobre máquina')
+
+            # Exibir os textos no script
+            st.write(texto_saudacao)
             st.write(texto_introducao)
-
-            texto_pergunta_ramo = textos_dict.get('pergunta_ramo', '')
-            st.write(texto_pergunta_ramo)
-        else:
-            st.write("Não foi possível carregar os textos do script.")
-
-        ramo_atuacao = st.text_input("Ramo de Atuação")
-
-        st.write("Entendido! Agora, poderia me informar qual máquina você está utilizando atualmente?")
-        maquina_cliente = st.selectbox("Selecione a Máquina:", abas, index=abas.index("KOM D50"))
+            st.write(texto_ramo)
+            ramo_atuacao = st.text_input("Ramo de Atuação")
+            st.write(texto_maquina)
+            maquina_cliente = st.selectbox("Selecione a Máquina:", abas)
 
         # Se uma máquina foi selecionada
         if maquina_cliente:
@@ -97,13 +93,7 @@ else:
                 df_maquina = df_maquina.dropna(
                     how='all').loc[:, ~df_maquina.columns.str.contains('^Unnamed')]
 
-                texto_pergunta_maquina = substituir_variaveis(textos_dict.get('pergunta_maquina', ''), '', '', maquina_cliente)
-                st.write(texto_pergunta_maquina)
-
-                # Botão para carregar a imagem da máquina
-                if st.button("Mostrar Imagem da Máquina"):
-                    imagem_url = buscar_imagem_maquina(maquina_cliente)
-                    st.image(imagem_url, caption=f"Imagem da Máquina {maquina_cliente}", use_column_width=True)
+                st.write(f"Ótimo! Trabalhar com {maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
 
                 coluna_nome = "DESCRIÇÃO/ KOMATSU D50"
                 if coluna_nome in df_maquina.columns:
@@ -123,12 +113,10 @@ else:
                                 itens_do_mesmo_kit = df_maquina[df_maquina['KIT']
                                                                 == kit_do_item]
                                 if not itens_do_mesmo_kit.empty:
-                                    st.write(
-                                        "Aqui estão outros itens que fazem parte do mesmo kit e que podem ser interessantes para você:")
+                                    st.write("Aqui estão outros itens que fazem parte do mesmo kit e que podem ser interessantes para você:")
                                     st.dataframe(itens_do_mesmo_kit,
                                                  use_container_width=True)
-                                    st.write(
-                                        "Oferecer um pacote completo desses itens pode garantir que sua máquina funcione perfeitamente por mais tempo. Podemos prosseguir com um orçamento?")
+                                    st.write("Oferecer um pacote completo desses itens pode garantir que sua máquina funcione perfeitamente por mais tempo. Podemos prosseguir com um orçamento?")
                         else:
                             st.write("Nenhum item encontrado com esse nome.")
                 else:
@@ -157,11 +145,6 @@ else:
                     st.title(f"Dados da Máquina: {maquina_selecionada}")
                     st.dataframe(df_maquina, use_container_width=True)
 
-                    # Botão para carregar a imagem da máquina
-                    if st.button("Mostrar Imagem da Máquina"):
-                        imagem_url = buscar_imagem_maquina(maquina_selecionada)
-                        st.image(imagem_url, caption=f"Imagem da Máquina {maquina_selecionada}", use_column_width=True)
-
                 except Exception as e:
                     st.error(f"Erro ao carregar os dados da máquina: {e}")
 
@@ -186,4 +169,3 @@ else:
             - Suporte técnico especializado
             - Rede de distribuição abrangente
             """)
-
