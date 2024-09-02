@@ -80,10 +80,12 @@ else:
             # Exibir os textos no script
             st.write(texto_saudacao)
             st.write(texto_introducao)
-            st.write(texto_ramo)
+            
             ramo_atuacao = st.text_input("Ramo de Atuação")
-            st.write(texto_maquina)
+            st.write(texto_ramo)
+
             maquina_cliente = st.selectbox("Selecione a Máquina:", abas)
+            st.write(texto_maquina)
 
         # Se uma máquina foi selecionada
         if maquina_cliente:
