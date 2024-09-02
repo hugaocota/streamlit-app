@@ -13,7 +13,10 @@ file_path_maquinas = "https://github.com/hugaocota/streamlit-app/raw/main/Imagen
 # Função para carregar os textos do Excel
 def carregar_textos(file_path):
     try:
+        st.write(f"Carregando arquivo de textos do caminho: {file_path}")
         textos_df = pd.read_excel(file_path)
+        st.write(f"Colunas encontradas no arquivo: {textos_df.columns}")
+        
         if 'Parte' not in textos_df.columns or 'Texto' not in textos_df.columns:
             st.error("As colunas 'Parte' e 'Texto' não foram encontradas no arquivo Excel.")
             return None
@@ -34,6 +37,7 @@ except Exception as e:
 
 # Verificar se o arquivo de máquinas existe e carregar as máquinas
 try:
+    st.write(f"Carregando arquivo de máquinas do caminho: {file_path_maquinas}")
     xls = pd.ExcelFile(file_path_maquinas)
     abas = xls.sheet_names  # Lista com os nomes das abas
 
