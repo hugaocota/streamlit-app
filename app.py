@@ -5,7 +5,7 @@ import pandas as pd
 base_url = "https://raw.githubusercontent.com/hugaocota/streamlit-app/main/"
 
 # Caminhos dos arquivos no GitHub
-file_path_maquinas = base_url + "Imagens/01%20-%20CATALOGO.xls"
+file_path_maquinas = base_url + "https://github.com/hugaocota/streamlit-app/blob/main/01%20-%20CATALOGO.xls"
 file_path_logo = base_url + "Logo%20Rech/Logo%20Rech.jpg"
 file_path_script = base_url + "Script/textos_script_venda.xlsx"
 
