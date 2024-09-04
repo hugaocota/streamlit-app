@@ -206,17 +206,20 @@ else:
         st.video("https://www.youtube.com/watch?v=2J3eXja_D1U")
         st.video("https://www.youtube.com/watch?v=qZS_2ybdv5Q")
 
-    # Função para exibir o PDF
-    def exibir_pdf(pdf_path):
-        with open(pdf_path, "rb") as f:
-            base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
-        st.markdown(pdf_display, unsafe_allow_html=True)
+    # Opção 5: Segmentos
+    elif menu_option == "Segmentos":
+        st.title("Segmentos - Material Rodante")
 
-    # Adicionar a nova opção "Segmentos" no menu lateral
-    if menu_option == "Segmentos":
-        st.title("Segmentos")
-    
-        # Botão para mostrar/ocultar o PDF
-        if st.button("Mostrar Material Rodante"):
-            exibir_pdf(pdf_material_rodante)
+        # Botão para mostrar ou ocultar o PDF
+        show_pdf = st.checkbox("Mostrar Material Rodante (PDF)", value=False)
+
+        if show_pdf:
+            pdf_path = "Apresentação1 Material Rodante 2024 - Rech_Clientes.pdf"
+            if os.path.exists(pdf_path):
+                with open(pdf_path, "rb") as pdf_file:
+                    pdf_data = pdf_file.read()
+                    st.download_button(label="Baixar PDF", data=pdf_data, file_name="Material_Rodante.pdf", mime="application/pdf")
+                    st.write("Visualize o material abaixo:")
+                    st.pdf(pdf_data)
+            else:
+                st.error("O arquivo PDF não foi encontrado.")
