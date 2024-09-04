@@ -197,19 +197,18 @@ else:
             """)
 
        # Opção 4: Venda mais (vídeos do YouTube)
-    elif menu_option == "Venda mais":
-        st.title("Venda Mais - Dicas e Estratégias")
+elif menu_option == "Venda mais":
+    st.title("Venda Mais - Dicas e Estratégias")
 
-        st.video("https://www.youtube.com/watch?v=PZ1uaXoINmk")
-        st.video("https://www.youtube.com/watch?v=i9bfGMhryYY")
-        st.video("https://www.youtube.com/watch?v=8LqBTCXBNzE")
-        st.video("https://www.youtube.com/watch?v=TOp6oYruEg4")
-        st.video("https://www.youtube.com/watch?v=Kh2m6prJHEU")
-        st.video("https://www.youtube.com/watch?v=kaoGiCkVUHI")
-        st.video("https://www.youtube.com/watch?v=2J3eXja_D1U")
-        st.video("https://www.youtube.com/watch?v=qZS_2ybdv5Q")
+    st.video("https://www.youtube.com/watch?v=PZ1uaXoINmk")
+    st.video("https://www.youtube.com/watch?v=i9bfGMhryYY")
+    st.video("https://www.youtube.com/watch?v=8LqBTCXBNzE")
+    st.video("https://www.youtube.com/watch?v=TOp6oYruEg4")
+    st.video("https://www.youtube.com/watch?v=Kh2m6prJHEU")
+    st.video("https://www.youtube.com/watch?v=kaoGiCkVUHI")
+    st.video("https://www.youtube.com/watch?v=2J3eXja_D1U")
 
-        # Opção 5: Segmentos
+# Opção 5: Segmentos
 elif menu_option == "Segmentos":
     st.title("Segmentos - Material Rodante")
 
@@ -224,7 +223,7 @@ elif menu_option == "Segmentos":
             with open(pdf_path, "rb") as pdf_file:
                 pdf_data = pdf_file.read()
 
-                # Adiciona um botão para download
+                # Adicionar um botão para download
                 st.download_button(label="Baixar PDF", data=pdf_data, file_name="Material_Rodante.pdf", mime="application/pdf")
 
                 # Codificar o PDF para base64
