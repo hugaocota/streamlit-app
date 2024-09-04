@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import os
-import base64
 
 # Definir o layout como "wide" para expandir o conteúdo
 st.set_page_config(layout="wide")
@@ -14,6 +13,9 @@ file_path_machines = '01 - CATALOGO.xls'
 
 # Caminho para a logo da empresa
 logo_path = r"Logo Rech/Logo Rech.jpg"
+
+# Caminho para o PDF de Material Rodante
+pdf_path = r"Apresentação1 Material Rodante 2024 - Rech_Clientes.pdf"
 
 # Função para carregar textos do script a partir do Excel
 def carregar_textos(file_path):
@@ -65,7 +67,7 @@ else:
     # Menu lateral com opções principais
     st.sidebar.title("Menu")
     menu_option = st.sidebar.radio("Selecione uma opção:", [
-                                   "Script de Venda", "Máquinas", "Marcas", "Venda mais"])
+                                   "Script de Venda", "Máquinas", "Marcas", "Venda mais", "Segmentos"])
 
     # Opção 1: Script de Venda
     if menu_option == "Script de Venda":
@@ -193,7 +195,7 @@ else:
             - Rede de distribuição abrangente
             """)
 
-    # Opção 4: Venda mais (vídeos do YouTube)
+       # Opção 4: Venda mais (vídeos do YouTube)
     elif menu_option == "Venda mais":
         st.title("Venda Mais - Dicas e Estratégias")
 
