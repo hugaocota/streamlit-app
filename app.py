@@ -64,7 +64,7 @@ else:
     # Menu lateral com opções principais
     st.sidebar.title("Menu")
     menu_option = st.sidebar.radio("Selecione uma opção:", [
-                                   "Script de Venda", "Máquinas", "Marcas"])
+                                   "Script de Venda", "Máquinas", "Marcas", "Venda mais"])
 
     # Opção 1: Script de Venda
     if menu_option == "Script de Venda":
@@ -191,3 +191,13 @@ else:
             - Suporte técnico especializado
             - Rede de distribuição abrangente
             """)
+
+    # Opção 4: Venda mais (vídeos do YouTube)
+    elif menu_option == "Venda mais":
+        st.title("Venda Mais - Dicas e Estratégias")
+        
+        st.video("https://www.youtube.com/watch?v=TOp6oYruEg4")
+        st.video("https://www.youtube.com/watch?v=Kh2m6prJHEU")
+        st.video("https://www.youtube.com/watch?v=kaoGiCkVUHI")
+        st.video("https://www.youtube.com/watch?v=2J3eXja_D1U")
+        st.video("https://www.youtube.com/watch?v=qZS_2ybdv5Q")
