@@ -100,10 +100,6 @@ else:
             maquina_cliente = st.selectbox("Selecione a Máquina:", abas, index=abas.index(default_machine))
             st.write(texto_maquina)
 
-            # Botão para carregar a imagem da máquina
-            if st.button("Mostrar Imagem da Máquina"):
-                carregar_imagem_maquina(maquina_cliente)
-
         # Se uma máquina foi selecionada
         if maquina_cliente:
             try:
@@ -114,6 +110,7 @@ else:
 
                 st.write(f"Ótimo! Trabalhar com {maquina_cliente} é sempre uma escolha sólida. Agora, vamos ver como podemos ajudar a manter sua máquina em perfeitas condições.")
 
+                # Campo de seleção dinâmica para a coluna "DESCRIÇÃO/ KOMATSU D50"
                 coluna_nome = "DESCRIÇÃO/ KOMATSU D50"
                 if coluna_nome in df_maquina.columns:
                     itens_lista = df_maquina[coluna_nome].dropna(
@@ -143,6 +140,10 @@ else:
 
             except Exception as e:
                 st.error(f"Erro ao carregar os dados da máquina: {e}")
+
+        # Botão para carregar a imagem da máquina
+        if st.button("Mostrar Imagem da Máquina"):
+            carregar_imagem_maquina(maquina_cliente)
 
     # Opção 2: Máquinas
     elif menu_option == "Máquinas":
