@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import base64
 
 # Definir o layout como "wide" para expandir o conteúdo
 st.set_page_config(layout="wide")
@@ -204,3 +205,18 @@ else:
         st.video("https://www.youtube.com/watch?v=kaoGiCkVUHI")
         st.video("https://www.youtube.com/watch?v=2J3eXja_D1U")
         st.video("https://www.youtube.com/watch?v=qZS_2ybdv5Q")
+
+    # Função para exibir o PDF
+    def exibir_pdf(pdf_path):
+        with open(pdf_path, "rb") as f:
+            base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
+        st.markdown(pdf_display, unsafe_allow_html=True)
+
+    # Adicionar a nova opção "Segmentos" no menu lateral
+    if menu_option == "Segmentos":
+        st.title("Segmentos")
+    
+        # Botão para mostrar/ocultar o PDF
+        if st.button("Mostrar Material Rodante"):
+            exibir_pdf(pdf_material_rodante)
