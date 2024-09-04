@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import base64
 
 # Definir o layout como "wide" para expandir o conteúdo
 st.set_page_config(layout="wide")
@@ -209,23 +210,28 @@ else:
         st.video("https://www.youtube.com/watch?v=qZS_2ybdv5Q")
 
         # Opção 5: Segmentos
-    elif menu_option == "Segmentos":
-        st.title("Segmentos - Material Rodante")
+elif menu_option == "Segmentos":
+    st.title("Segmentos - Material Rodante")
 
-        # Botão para mostrar ou ocultar o PDF
-        show_pdf = st.checkbox("Mostrar Material Rodante (PDF)", value=False)
+    # Botão para mostrar ou ocultar o PDF
+    show_pdf = st.checkbox("Mostrar Material Rodante (PDF)", value=False)
 
-        pdf_path = "Apresentação1 Material Rodante 2024 - Rech_Clientes.pdf"
+    pdf_path = "Apresentação1 Material Rodante 2024 - Rech_Clientes.pdf"
 
-        if show_pdf:
-            if os.path.exists(pdf_path):
-                # Exibir o PDF com um iframe
-                with open(pdf_path, "rb") as pdf_file:
-                    pdf_data = pdf_file.read()
-                    st.download_button(label="Baixar PDF", data=pdf_data, file_name="Material_Rodante.pdf", mime="application/pdf")
+    if show_pdf:
+        if os.path.exists(pdf_path):
+            # Exibir o PDF com um iframe
+            with open(pdf_path, "rb") as pdf_file:
+                pdf_data = pdf_file.read()
 
-                # Usar iframe para visualizar o PDF
-                pdf_display = f'<iframe src="data:application/pdf;base64,{pdf_data.encode("base64").decode()}" width="700" height="1000" type="application/pdf"></iframe>'
+                # Adiciona um botão para download
+                st.download_button(label="Baixar PDF", data=pdf_data, file_name="Material_Rodante.pdf", mime="application/pdf")
+
+                # Codificar o PDF para base64
+                b64_pdf = base64.b64encode(pdf_data).decode('utf-8')
+
+                # Exibir o PDF usando iframe
+                pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
                 st.markdown(pdf_display, unsafe_allow_html=True)
-            else:
-                st.error("O arquivo PDF não foi encontrado.")
+        else:
+            st.error("O arquivo PDF não foi encontrado.")
