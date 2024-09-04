@@ -195,7 +195,10 @@ else:
     # Opção 4: Venda mais (vídeos do YouTube)
     elif menu_option == "Venda mais":
         st.title("Venda Mais - Dicas e Estratégias")
-        
+
+        st.video("https://www.youtube.com/watch?v=PZ1uaXoINmk")
+        st.video("https://www.youtube.com/watch?v=i9bfGMhryYY")
+        st.video("https://www.youtube.com/watch?v=8LqBTCXBNzE")
         st.video("https://www.youtube.com/watch?v=TOp6oYruEg4")
         st.video("https://www.youtube.com/watch?v=Kh2m6prJHEU")
         st.video("https://www.youtube.com/watch?v=kaoGiCkVUHI")
